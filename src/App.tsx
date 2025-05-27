@@ -7,6 +7,7 @@ import LayoutUser from './modules/layouts/layoutUser/LayoutUser';
 import LoginPage from './modules/auth/pages/LoginPage';
 import RegisterPage from './modules/auth/pages/RegisterPage';
 import SyncClerkUser from './services/SyncClerkUser';
+import MoviePage from './modules/movie/pages/MoviePage';
 
 function App() {
   return (
@@ -23,6 +24,14 @@ function App() {
           }
         />
         <Route path='/register' element={<RegisterPage />} />
+        <Route
+          path='/movies'
+          element={
+            <LayoutUser>
+              <MoviePage />
+            </LayoutUser>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );
