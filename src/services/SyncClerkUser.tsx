@@ -16,10 +16,13 @@ const SyncClerkUser = () => {
           '/me',
           {
             clerkUserId: user.id,
-            name: `${user.firstName} ${user.lastName ?? ''}`,
+            name:
+              `${user.firstName ?? ''} ${user.lastName ?? ''}`.trim() ||
+              'No Name',
             email: user.primaryEmailAddress?.emailAddress,
             emailVerified:
               user.primaryEmailAddress?.verification?.status === 'verified',
+            role: user.publicMetadata?.role || 'user',
           },
           {
             headers: {

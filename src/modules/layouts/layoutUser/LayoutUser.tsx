@@ -1,6 +1,6 @@
-import Header from '../../auth/components/Header';
-import Footer from '../../auth/components/Footer';
 import type { ReactNode } from 'react';
+import Header from '../../../components/user/Header';
+import Footer from '../../../components/user/Footer';
 
 interface LayoutUserProps {
   children: ReactNode;
