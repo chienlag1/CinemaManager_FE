@@ -1,12 +1,18 @@
-import AdminSidebar from '../../../components/admin/sideBar';
+import type { ReactNode } from 'react';
+import AdminSidebar from '../../../components/admin/sideBarAdmin';
 
-const LayoutAdmin = ({ children }: { children: React.ReactNode }) => {
+interface LayoutUserProps {
+  children: ReactNode;
+}
+
+function LayoutAdmin({ children }: LayoutUserProps) {
+  // your layout logic
   return (
-    <div className='flex'>
+    <div>
       <AdminSidebar />
-      <div className='ml-64 p-6 w-full'>{children}</div>
+      {children}
     </div>
   );
-};
+}
 
 export default LayoutAdmin;
