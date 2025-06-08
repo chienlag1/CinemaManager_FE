@@ -1,16 +1,21 @@
 import type { ReactNode } from 'react';
-import AdminSidebar from '../../../components/admin/sideBarAdmin';
+import AdminSidebar from '../../../components/admin/sideBarAdmin'; // Đảm bảo đường dẫn này đúng
 
-interface LayoutUserProps {
+interface LayoutAdminProps {
   children: ReactNode;
 }
 
-function LayoutAdmin({ children }: LayoutUserProps) {
-  // your layout logic
+function LayoutAdmin({ children }: LayoutAdminProps) {
   return (
-    <div>
-      <AdminSidebar />
-      {children}
+    <div className='flex h-screen'>
+      {' '}
+      {/* Sử dụng flexbox để sidebar và nội dung nằm cạnh nhau */}
+      <AdminSidebar /> {/* Sidebar dọc của bạn */}
+      <main className='flex-1 p-8 overflow-auto'>
+        {' '}
+        {/* Phần nội dung chính, chiếm hết không gian còn lại */}
+        {children}
+      </main>
     </div>
   );
 }
