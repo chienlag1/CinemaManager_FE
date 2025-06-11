@@ -105,15 +105,9 @@ const movieApiService = {
    * @returns Promise<DeleteMovieResponse>
    */
   deleteMovie: async (id: string): Promise<DeleteMovieResponse> => {
-    // Lưu ý: Backend của bạn trả về status 204 No Content cho DELETE thành công,
-    // điều này có nghĩa là response.data có thể là rỗng hoặc không có gì.
-    // Tuy nhiên, nếu bạn muốn vẫn nhận được 'status' và 'message' từ body,
-    // thì backend cần phải gửi chúng ngay cả với 204 hoặc bạn cần xử lý trường hợp response.data là rỗng.
-    // Với backend hiện tại của bạn, response.data sẽ là rỗng với 204.
-    // Nếu bạn muốn frontend nhận được message, backend cần thay đổi status code thành 200 OK
-    // khi xóa thành công và gửi body với message.
+
     const response = await api.delete<DeleteMovieResponse>(`/movies/${id}`);
-    return response.data; // Có thể là undefined nếu backend trả về 204 và không có body
+    return response.data; // 
   },
 
   /**

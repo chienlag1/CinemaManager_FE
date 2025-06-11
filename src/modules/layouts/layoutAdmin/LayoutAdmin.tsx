@@ -11,8 +11,7 @@ function LayoutAdmin({ children }: LayoutAdminProps) {
       {' '}
       {/* Sử dụng flexbox để sidebar và nội dung nằm cạnh nhau */}
       <AdminSidebar /> {/* Sidebar dọc của bạn */}
-      <main className='flex-1 p-8 overflow-auto'>
-        {' '}
+      <main className='flex-1 overflow-auto'>
         {/* Phần nội dung chính, chiếm hết không gian còn lại */}
         {children}
       </main>

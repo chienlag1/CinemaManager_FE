@@ -1,14 +1,16 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
-import HomePage from './modules/Home/page/HomePage';
+import HomePage from './modules/user/Home/page/HomePage';
 import LayoutUser from './modules/layouts/layoutUser/LayoutUser';
 import LoginPage from './modules/auth/pages/LoginPage';
 import RegisterPage from './modules/auth/pages/RegisterPage';
-import MoviePage from './modules/movie/pages/MoviePage';
+
 import ProtectedRoute from './modules/layouts/ProtectedRoute';
 import AdminDashboardPage from './modules/admin/pages/AdminDashboard';
 import LayoutAdmin from './modules/layouts/layoutAdmin/LayoutAdmin';
-import MovieManagementPage from './modules/admin/components/MovieManagement/MovieManagementPage';
+import MovieManagementPage from './modules/admin/components/MovieManagement/pages/MovieManagementPage';
+import MoviePage from './modules/user/movie/pages/MoviePage';
+import RoomManagementPage from './modules/admin/components/RoomManagement/pages/RoomManagementPage';
 
 function App() {
   return (
@@ -56,6 +58,17 @@ function App() {
               <LayoutAdmin>
                 {' '}
                 <MovieManagementPage />
+              </LayoutAdmin>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path='/admin/rooms'
+          element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <LayoutAdmin>
+                {' '}
+                <RoomManagementPage />
               </LayoutAdmin>
             </ProtectedRoute>
           }

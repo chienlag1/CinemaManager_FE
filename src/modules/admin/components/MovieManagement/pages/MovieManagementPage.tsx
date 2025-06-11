@@ -1,22 +1,22 @@
-import React, { useState } from 'react';
-
+import React, { useState, useCallback } from 'react';
 import Swal from 'sweetalert2';
+import MovieFilter from '../components/MovieFilter';
+import type { Movie } from '../../../../../types/movie.type';
+import MovieForm from '../components/MovieForm';
+import MovieList from '../components/MovieList';
 
-import MovieList from './MovieList';
-import MovieFilter from './MovieFilter';
-import MovieForm from './MovieForm';
-// Đảm bảo đường dẫn này khớp với cấu trúc project của bạn.
-// Nếu bạn đang sử dụng AdminLayout như chúng ta đã thảo luận, thì đường dẫn có thể khác.
-// Ví dụ: import AdminLayout from '../layout/AdminLayout'; // Nếu AdminLayout nằm trong modules/admin/layout
-import type { Movie } from '../../../../types/movie.type';
-
-// Đã thêm MovieApiResponse vào import type
+interface MovieFilterType {
+  title?: string;
+  isShowing?: boolean;
+  genre?: string[];
+}
 
 const MovieManagementPage: React.FC = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
-  const [filter, setFilter] = useState({});
-  const [refreshList, setRefreshList] = useState(0);
+  // Use the defined type for the filter state
+  const [filter, setFilter] = useState<MovieFilterType>({});
+  const [triggerRefresh, setTriggerRefresh] = useState(0);
 
   const handleAddNewMovie = () => {
     setSelectedMovie(null);
@@ -41,10 +41,10 @@ const MovieManagementPage: React.FC = () => {
       showConfirmButton: false,
       timer: 1500,
       customClass: {
-        popup: 'swal2-dark-theme', // Apply dark theme to SweetAlert2 popup
+        popup: 'swal2-dark-theme',
       },
     });
-    setRefreshList((prev) => prev + 1);
+    setTriggerRefresh((prev) => prev + 1);
     handleFormClose();
   };
 
@@ -59,17 +59,30 @@ const MovieManagementPage: React.FC = () => {
         popup: 'swal2-dark-theme',
       },
     });
-    setRefreshList((prev) => prev + 1);
+    setTriggerRefresh((prev) => prev + 1);
   };
 
-  const handleFilterChange = (newFilter: any) => {
-    setFilter(newFilter);
-    setRefreshList((prev) => prev + 1);
-  };
+  const handleFilterChange = useCallback(
+    (newFilter: MovieFilterType) => {
+      // <--- Also type newFilter here
+      // Perform a shallow comparison to see if the filter actually changed
+      const currentKeys = Object.keys(filter) as (keyof MovieFilterType)[];
+      const newKeys = Object.keys(newFilter) as (keyof MovieFilterType)[];
+
+      const isFilterChanged =
+        currentKeys.length !== newKeys.length ||
+        newKeys.some((key) => filter[key] !== newFilter[key]);
+
+      if (isFilterChanged) {
+        setFilter(newFilter);
+      }
+    },
+    [filter]
+  );
 
   return (
     <>
-      <div className='min-h-screen p-8'>
+      <div className='min-h-screen'>
         <div className='container mx-auto bg-base-100 p-8 rounded-lg shadow-xl'>
           <h1 className='text-4xl font-bold mb-8 text-primary text-center'>
             Quản Lý Phim
@@ -121,10 +134,10 @@ const MovieManagementPage: React.FC = () => {
           )}
 
           <MovieList
-            key={refreshList}
             onEdit={handleEditMovie}
             onDeleteSuccess={handleDeleteSuccess}
             filter={filter}
+            triggerRefresh={triggerRefresh}
           />
         </div>
       </div>

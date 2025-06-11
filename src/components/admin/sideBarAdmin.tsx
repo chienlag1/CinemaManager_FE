@@ -66,6 +66,28 @@ const AdminSidebar = () => {
           </li>
           <li>
             <Link
+              to='/admin/rooms'
+              className='flex items-center gap-3 py-2 px-4 rounded-lg hover:bg-base-300 active:bg-primary active:text-primary-content'
+            >
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                className='h-6 w-6'
+                fill='none'
+                viewBox='0 0 24 24'
+                stroke='currentColor'
+              >
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  strokeWidth='2'
+                  d='M7 4v16M17 4v16M4 8h16M4 12h16M4 16h16M4 20h16'
+                />
+              </svg>
+              Room Management
+            </Link>
+          </li>
+          <li>
+            <Link
               to='/admin/movies'
               className='flex items-center gap-3 py-2 px-4 rounded-lg hover:bg-base-300 active:bg-primary active:text-primary-content'
             >
@@ -83,7 +105,7 @@ const AdminSidebar = () => {
                   d='M7 4v16M17 4v16M4 8h16M4 12h16M4 16h16M4 20h16'
                 />
               </svg>
-              Screening Management
+              ShowTime Management
             </Link>
           </li>
           <li>

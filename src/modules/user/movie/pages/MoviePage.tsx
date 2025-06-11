@@ -1,5 +1,5 @@
 // movie/pages/MoviePage.tsx
-import React, { useState } from 'react';
+import { useState } from 'react';
 import MovieListPage from '../components/MovieListPage';
 
 interface Movie {

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
-import api from '../../../../services/api.axios'; // Import instance axios đã cấu hình
 import Swal from 'sweetalert2';
-import type { Movie } from '../../../../types/movie.type'; // Import Movie type
+import type { Movie } from '../../../../../types/movie.type';
+import api from '../../../../../services/api.axios';
 
 interface MovieFormProps {
   movie: Movie | null; // Null khi thêm mới, có dữ liệu khi chỉnh sửa
@@ -15,7 +15,7 @@ const movieGenres = [
   'Adventure',
   'Animation',
   'Comedy',
-  'Drama', // Đã sửa "DraMa" thành "Drama" để thống nhất với schema
+  'Drama',
   'Documentary',
   'Family',
   'Horror',
@@ -307,21 +307,6 @@ const MovieForm: React.FC<MovieFormProps> = ({
               {errors.posterUrl}
             </label>
           )}
-        </div>
-
-        {/* Trailer URL */}
-        <div className='form-control col-span-1 md:col-span-2'>
-          <label className='label'>
-            <span className='label-text'>URL Trailer (tùy chọn):</span>
-          </label>
-          <input
-            type='text'
-            name='trailerUrl'
-            placeholder='http://example.com/trailer.mp4'
-            className='input input-bordered w-full'
-            value={formData.trailerUrl || ''}
-            onChange={handleChange}
-          />
         </div>
 
         {/* Description */}
