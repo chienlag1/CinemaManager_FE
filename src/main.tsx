@@ -4,19 +4,19 @@ import './index.css';
 import App from './App';
 import { ClerkProvider } from '@clerk/clerk-react';
 // Import Provider và store
-import { Provider } from 'react-redux';
-import { store } from './store';
+import { UserProvider } from './contexts/UserContext';
 
 const container = document.getElementById('root');
 const root = createRoot(container!);
 const PUBLISHABLE_KEY =
   'pk_test_Y29udGVudC1tYWdwaWUtMjEuY2xlcmsuYWNjb3VudHMuZGV2JA';
+
 root.render(
   <React.StrictMode>
     <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
-      <Provider store={store}>
+      <UserProvider>
         <App />
-      </Provider>
+      </UserProvider>
     </ClerkProvider>
   </React.StrictMode>
 );

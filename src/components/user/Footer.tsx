@@ -7,15 +7,15 @@ const Footer = () => {
       >
         <div>
           <h2 className='footer-title text-lg font-semibold'>Thông tin</h2>
-          <a className='link link-hover'>Về chúng tôi</a>
-          <a className='link link-hover'>Liên hệ</a>
-          <a className='link link-hover'>Tuyển dụng</a>
+          <p className='link link-hover'>Về chúng tôi</p>
+          <p className='link link-hover'>Liên hệ</p>
+          <p className='link link-hover'>Tuyển dụng</p>
         </div>
         <div>
           <h2 className='footer-title text-lg font-semibold'>Hỗ trợ</h2>
-          <a className='link link-hover'>Trung tâm trợ giúp</a>
-          <a className='link link-hover'>Chính sách bảo mật</a>
-          <a className='link link-hover'>Điều khoản sử dụng</a>
+          <p className='link link-hover'>Trung tâm trợ giúp</p>
+          <p className='link link-hover'>Chính sách bảo mật</p>
+          <p className='link link-hover'>Điều khoản sử dụng</p>
         </div>
         <div>
           <h2 className='footer-title text-lg font-semibold'>Kết nối</h2>
