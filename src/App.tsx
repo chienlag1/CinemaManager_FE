@@ -11,6 +11,7 @@ import LayoutAdmin from './modules/layouts/layoutAdmin/LayoutAdmin';
 import MovieManagementPage from './modules/admin/components/MovieManagement/pages/MovieManagementPage';
 import MoviePage from './modules/user/movie/pages/MoviePage';
 import RoomManagementPage from './modules/admin/components/RoomManagement/pages/RoomManagementPage';
+import ShowtimeManagementPage from './modules/admin/components/ShowTimeManagement/pages/ShowTimeManagementPage';
 
 function App() {
   return (
@@ -69,6 +70,17 @@ function App() {
               <LayoutAdmin>
                 {' '}
                 <RoomManagementPage />
+              </LayoutAdmin>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path='/admin/showtimes'
+          element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <LayoutAdmin>
+                {' '}
+                <ShowtimeManagementPage />
               </LayoutAdmin>
             </ProtectedRoute>
           }

@@ -4,10 +4,7 @@ import type { Movie } from '../types/movie.type';
 import api from './api.axios'; // Import instance Axios đã được cấu hình (ví dụ: với base URL và JWT token)
 
 
-/**
- * Interface cho phản hồi API khi lấy danh sách phim.
- * Chứa mảng phim và tổng số kết quả.
- */
+
 interface AllMoviesResponse {
   status: string;
   results: number;
@@ -16,9 +13,6 @@ interface AllMoviesResponse {
   };
 }
 
-/**
- * Interface cho phản hồi API khi lấy một phim cụ thể.
- */
 interface SingleMovieResponse {
   status: string;
   data: {
@@ -26,10 +20,6 @@ interface SingleMovieResponse {
   };
 }
 
-/**
- * Interface cho phản hồi API khi tạo/cập nhật phim.
- * Chứa thông báo và dữ liệu phim đã được tạo/cập nhật.
- */
 interface MutateMovieResponse {
   status: string;
   message: string;
@@ -38,38 +28,21 @@ interface MutateMovieResponse {
   };
 }
 
-/**
- * Interface cho phản hồi API khi xóa phim.
- * Endpoint DELETE của bạn trả về status 204 No Content,
- * nhưng trong thực tế, response body vẫn có thể chứa status và message.
- */
 interface DeleteMovieResponse {
   status: string;
   message: string;
   data: null;
 }
 
-/**
- * Dịch vụ API cho các thao tác liên quan đến phim.
- */
+
 const movieApiService = {
-  /**
-   * Lấy tất cả các bộ phim.
-   * GET /api/movies
-   * @param params Các tham số truy vấn (ví dụ: page, limit, filter).
-   * @returns Promise<AllMoviesResponse>
-   */
+
   getAllMovies: async (params?: any): Promise<AllMoviesResponse> => {
     const response = await api.get<AllMoviesResponse>('/movies', { params });
     return response.data;
   },
 
-  /**
-   * Lấy một phim cụ thể bằng ID.
-   * GET /api/movies/:id
-   * @param id ID của phim.
-   * @returns Promise<SingleMovieResponse>
-   */
+ 
   getMovieById: async (id: string): Promise<SingleMovieResponse> => {
     const response = await api.get<SingleMovieResponse>(`/movies/${id}`);
     return response.data;
@@ -86,24 +59,11 @@ const movieApiService = {
     return response.data;
   },
 
-  /**
-   * Cập nhật thông tin một bộ phim bằng ID.
-   * PATCH /api/movies/:id
-   * @param id ID của phim cần cập nhật.
-   * @param movieData Dữ liệu cập nhật.
-   * @returns Promise<MutateMovieResponse>
-   */
   updateMovie: async (id: string, movieData: Partial<Movie>): Promise<MutateMovieResponse> => {
     const response = await api.patch<MutateMovieResponse>(`/movies/${id}`, movieData);
     return response.data;
   },
 
-  /**
-   * Xóa một bộ phim bằng ID.
-   * DELETE /api/movies/:id
-   * @param id ID của phim cần xóa.
-   * @returns Promise<DeleteMovieResponse>
-   */
   deleteMovie: async (id: string): Promise<DeleteMovieResponse> => {
 
     const response = await api.delete<DeleteMovieResponse>(`/movies/${id}`);

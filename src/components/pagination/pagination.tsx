@@ -27,37 +27,49 @@ const Pagination: React.FC<PaginationProps> = ({
   }
 
   return (
-    <div className='join'>
-      {/* Nút Previous */}
-      <button
-        className='join-item btn'
-        disabled={currentPage === 1} // Vô hiệu hóa nếu đang ở trang đầu tiên
-        onClick={() => onPageChange(currentPage - 1)}
-      >
-        «
-      </button>
-
-      {/* Các nút số trang */}
-      {pages.map((page) => (
+    <div className='flex justify-center mt-6'>
+      <nav className='inline-flex items-center bg-gray-200 rounded-lg p-1 shadow-sm'>
+        {/* Previous button */}
         <button
-          key={page}
-          className={`join-item btn ${
-            currentPage === page ? 'btn-active' : ''
-          }`} // Đánh dấu trang hiện tại
-          onClick={() => onPageChange(page)}
+          onClick={() => onPageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+          className={`w-8 h-8 flex items-center justify-center rounded-md text-sm font-medium transition-colors ${
+            currentPage === 1
+              ? 'text-gray-400 cursor-not-allowed'
+              : 'text-gray-600 hover:bg-white hover:shadow-sm'
+          }`}
         >
-          {page}
+          ‹
         </button>
-      ))}
 
-      {/* Nút Next */}
-      <button
-        className='join-item btn'
-        disabled={currentPage === totalPages} // Vô hiệu hóa nếu đang ở trang cuối cùng
-        onClick={() => onPageChange(currentPage + 1)}
-      >
-        »
-      </button>
+        {/* Page numbers */}
+        {pages.map((page) => (
+          <button
+            key={page}
+            onClick={() => onPageChange(page)}
+            className={`w-8 h-8 flex items-center justify-center rounded-md text-sm font-medium mx-1 transition-all ${
+              currentPage === page
+                ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-md'
+                : 'text-gray-600 hover:bg-white hover:shadow-sm'
+            }`}
+          >
+            {page}
+          </button>
+        ))}
+
+        {/* Next button */}
+        <button
+          onClick={() => onPageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
+          className={`w-8 h-8 flex items-center justify-center rounded-md text-sm font-medium transition-colors ${
+            currentPage === totalPages
+              ? 'text-gray-400 cursor-not-allowed'
+              : 'text-gray-600 hover:bg-white hover:shadow-sm'
+          }`}
+        >
+          ›
+        </button>
+      </nav>
     </div>
   );
 };

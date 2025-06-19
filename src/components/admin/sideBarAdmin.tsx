@@ -85,10 +85,30 @@ const AdminSidebar = () => {
               </svg>
               Room Management
             </Link>
+            <Link
+              to='/admin/tickets'
+              className='flex items-center gap-3 py-2 px-4 rounded-lg hover:bg-base-300 active:bg-primary active:text-primary-content'
+            >
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                className='h-6 w-6'
+                fill='none'
+                viewBox='0 0 24 24'
+                stroke='currentColor'
+              >
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  strokeWidth='2'
+                  d='M7 4v16M17 4v16M4 8h16M4 12h16M4 16h16M4 20h16'
+                />
+              </svg>
+              Ticket Management
+            </Link>
           </li>
           <li>
             <Link
-              to='/admin/movies'
+              to='/admin/showtimes'
               className='flex items-center gap-3 py-2 px-4 rounded-lg hover:bg-base-300 active:bg-primary active:text-primary-content'
             >
               <svg
