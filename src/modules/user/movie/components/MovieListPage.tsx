@@ -1,6 +1,6 @@
 // movie/components/MovieListPage.tsx
 import React from 'react';
-import MovieCard from '../../../../components/movieCard/MovieCard';
+import MovieCard from './MovieCard';
 import type { Movie } from '../../../../types/movie.type';
 
 interface MovieListPageProps {

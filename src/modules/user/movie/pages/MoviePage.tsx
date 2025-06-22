@@ -2,13 +2,18 @@ import { useState, useEffect } from 'react';
 import MovieListPage from '../components/MovieListPage';
 import movieApiService from '../../../../services/api.movie';
 import type { Movie } from '../../../../types/movie.type';
-import MovieDetailModal from '../../../../components/movieCard/DetailMovieCard';
-const genres = ['All', 'action', 'science fiction'];
+import MovieDetailModal from '../components/DetailMovieCard';
+import MovieFilter from '../../../admin/components/MovieManagement/components/MovieFilter';
+
+interface MovieFilterType {
+  title?: string;
+  isShowing?: boolean;
+  genre?: string[];
+}
 
 const MoviePage = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedGenre, setSelectedGenre] = useState('All');
+  const [filter, setFilter] = useState<MovieFilterType>({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
@@ -32,15 +37,25 @@ const MoviePage = () => {
   }, []);
 
   const filteredMovies = movies.filter((movie) => {
-    const matchesSearch = movie.title
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase());
+    const matchesTitle = filter.title
+      ? movie.title.toLowerCase().includes(filter.title.toLowerCase())
+      : true;
+
+    const matchesIsShowing =
+      filter.isShowing !== undefined
+        ? movie.isShowing === filter.isShowing
+        : true;
+
     const matchesGenre =
-      selectedGenre === 'All' ||
-      (Array.isArray(movie.genre)
-        ? movie.genre.includes(selectedGenre)
-        : movie.genre === selectedGenre);
-    return matchesSearch && matchesGenre;
+      filter.genre && filter.genre.length > 0
+        ? filter.genre.some((g) =>
+            Array.isArray(movie.genre)
+              ? movie.genre.includes(g)
+              : movie.genre === g
+          )
+        : true;
+
+    return matchesTitle && matchesIsShowing && matchesGenre;
   });
 
   const handleMovieDetails = (movie: Movie) => {
@@ -55,62 +70,29 @@ const MoviePage = () => {
 
   return (
     <div className='p-6'>
-      {/* Search & Filter Controls */}
-      <div className='flex flex-col sm:flex-row items-center justify-between gap-4 mb-6'>
-        <div className='form-control w-full sm:w-1/2'>
-          <label className='input input-bordered flex items-center gap-2'>
-            <svg
-              xmlns='http://www.w3.org/2000/svg'
-              className='h-5 w-5 opacity-50'
-              fill='none'
-              viewBox='0 0 24 24'
-              stroke='currentColor'
-            >
-              <path
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                strokeWidth='2'
-                d='M21 21l-4.35-4.35M16 10a6 6 0 11-12 0 6 6 0 0112 0z'
-              />
-            </svg>
-            <input
-              type='text'
-              className='grow'
-              placeholder='Search for movies...'
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </label>
-        </div>
+      <h1 className='text-4xl font-extrabold text-center  text-white drop-shadow-lg pb-6'>
+        Danh Sách Phim
+      </h1>
 
-        <div className='flex justify-end w-full mb-6'>
-          <div className='form-control w-full sm:w-1/3'>
-            <select
-              className='select select-bordered'
-              value={selectedGenre}
-              onChange={(e) => setSelectedGenre(e.target.value)}
-            >
-              {genres.map((genre) => (
-                <option key={genre} value={genre}>
-                  {genre}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-      </div>
+      {/* Hiển thị thông báo lỗi nếu có */}
+      {/* Bộ lọc phim */}
+      <MovieFilter onFilterChange={(filter) => setFilter(filter)} />
 
-      {/* Status & Movie List */}
-      {loading && <p className='text-gray-400'>Loading movies...</p>}
-      {error && <p className='text-red-500'>{error}</p>}
-      {!loading && !error && (
-        <MovieListPage
-          movies={filteredMovies}
-          onDetailsClick={handleMovieDetails}
-        />
-      )}
+      {/* Trạng thái & danh sách phim */}
+      {!loading &&
+        !error &&
+        (filteredMovies.length > 0 ? (
+          <MovieListPage
+            movies={filteredMovies}
+            onDetailsClick={handleMovieDetails}
+          />
+        ) : (
+          <p className='text-gray-400 text-center mt-6'>
+            Không tìm thấy phim phù hợp .
+          </p>
+        ))}
 
-      {/* Movie Detail Modal */}
+      {/* Modal chi tiết */}
       {selectedMovie && (
         <MovieDetailModal
           isOpen={isModalOpen}
