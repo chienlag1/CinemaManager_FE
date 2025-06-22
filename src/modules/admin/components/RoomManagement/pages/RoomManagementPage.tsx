@@ -12,6 +12,7 @@ import type { RoomFilters } from '../components/RoomFilter';
 import RoomFilter from '../components/RoomFilter';
 import { roomApiService } from '../../../../../services/api.room';
 import { confirmAndDelete, showToast } from '../../../../../utils/alertUtils';
+import Pagination from '../../../../../components/pagination/pagination';
 
 function RoomManagementPage() {
   const [rooms, setRooms] = useState<Room[]>([]);
@@ -19,6 +20,10 @@ function RoomManagementPage() {
   const [roomToEdit, setRoomToEdit] = useState<Room | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(5);
+  const [totalItems, setTotalItems] = useState(0);
+
   const [filters, setFilters] = useState<RoomFilters>({
     roomName: '',
     roomType: '',
@@ -30,10 +35,9 @@ function RoomManagementPage() {
     setError(null);
     try {
       const response = await roomApiService.getAllRooms();
-      console.log('Fetched Rooms:', response);
-
       const fetchedRooms: Room[] = response.data.rooms;
 
+      // Lọc dữ liệu dựa trên bộ lọc hiện tại
       const filtered = fetchedRooms.filter((room: Room) => {
         const matchesName = room.name
           .toLowerCase()
@@ -47,14 +51,22 @@ function RoomManagementPage() {
         return matchesName && matchesType && matchesStatus;
       });
 
-      setRooms(filtered);
+      // Tính chỉ mục phân trang
+      const startIndex = (currentPage - 1) * itemsPerPage;
+      const paginatedRooms = filtered.slice(
+        startIndex,
+        startIndex + itemsPerPage
+      );
+
+      setRooms(paginatedRooms);
+      setTotalItems(filtered.length); // để tính số trang
     } catch (err) {
       console.error('Failed to fetch rooms:', err);
       setError(new Error('Không thể tải dữ liệu phòng.'));
     } finally {
       setIsLoading(false);
     }
-  }, [filters]);
+  }, [filters, currentPage, itemsPerPage]);
 
   useEffect(() => {
     fetchRooms();
@@ -180,6 +192,15 @@ function RoomManagementPage() {
           onSubmit={roomToEdit ? handleEditRoom : handleAddRoom}
           roomToEdit={roomToEdit}
         />
+
+        <div className='mt-6 flex justify-center'>
+          <Pagination
+            totalItems={totalItems}
+            itemsPerPage={itemsPerPage}
+            currentPage={currentPage}
+            onPageChange={setCurrentPage}
+          />
+        </div>
       </div>
     </div>
   );

@@ -22,7 +22,7 @@ const Pagination: React.FC<PaginationProps> = ({
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
 
   // Không hiển thị phân trang nếu chỉ có 1 trang hoặc không có mục nào
-  if (totalPages <= 1) {
+  if (totalPages === 0) {
     return null;
   }
 
