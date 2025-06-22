@@ -109,14 +109,12 @@ const MovieManagementPage: React.FC = () => {
 
         {/* PHÂN TRANG */}
         <div className='mt-6 flex justify-center'>
-          {totalItems > itemsPerPage && (
-            <Pagination
-              totalItems={totalItems}
-              itemsPerPage={itemsPerPage}
-              currentPage={currentPage}
-              onPageChange={setCurrentPage}
-            />
-          )}
+          <Pagination
+            totalItems={totalItems}
+            itemsPerPage={itemsPerPage}
+            currentPage={currentPage}
+            onPageChange={setCurrentPage}
+          />
         </div>
       </div>
     </div>
