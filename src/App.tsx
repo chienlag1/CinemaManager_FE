@@ -4,7 +4,6 @@ import HomePage from './modules/user/Home/page/HomePage';
 import LayoutUser from './modules/layouts/layoutUser/LayoutUser';
 import LoginPage from './modules/auth/pages/LoginPage';
 import RegisterPage from './modules/auth/pages/RegisterPage';
-
 import ProtectedRoute from './modules/layouts/ProtectedRoute';
 import AdminDashboardPage from './modules/admin/pages/AdminDashboard';
 import LayoutAdmin from './modules/layouts/layoutAdmin/LayoutAdmin';

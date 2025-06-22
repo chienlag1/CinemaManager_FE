@@ -90,12 +90,6 @@ const movieApiService = {
     return response.data;
   },
 
-  /**
-   * Lấy danh sách phim theo thể loại.
-   * GET /api/movies/genre/:genre
-   * @param genre Tên thể loại.
-   * @returns Promise<AllMoviesResponse>
-   */
   getMoviesByGenre: async (genre: string): Promise<AllMoviesResponse> => {
     const response = await api.get<AllMoviesResponse>(`/movies/genre/${genre}`);
     return response.data;

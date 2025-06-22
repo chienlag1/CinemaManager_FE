@@ -11,7 +11,6 @@ import type { RoomFilters } from '../components/RoomFilter';
 
 import RoomFilter from '../components/RoomFilter';
 import { roomApiService } from '../../../../../services/api.room';
-import Swal from 'sweetalert2';
 import { confirmAndDelete, showToast } from '../../../../../utils/alertUtils';
 
 function RoomManagementPage() {
