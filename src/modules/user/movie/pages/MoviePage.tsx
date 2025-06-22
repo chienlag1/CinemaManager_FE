@@ -1,78 +1,62 @@
-// movie/pages/MoviePage.tsx
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import MovieListPage from '../components/MovieListPage';
-
-interface Movie {
-  id: number;
-  title: string;
-  description: string;
-  posterUrl: string;
-  genre: string;
-}
-
-const mockMovies: Movie[] = [
-  {
-    id: 1,
-    title: 'Avengers: Endgame',
-    description: 'Sau khi Thanos xoá sổ một nửa vũ trụ...',
-    posterUrl:
-      'https://image.tmdb.org/t/p/w500/or06FN3Dka5tukK1e9sl16pB3iy.jpg',
-    genre: 'action',
-  },
-  {
-    id: 2,
-    title: 'Inception',
-    description: 'Một tên trộm chuyên đánh cắp thông tin thông qua giấc mơ...',
-    posterUrl:
-      'https://image.tmdb.org/t/p/w500/edv5CZvWj09upOsy2Y6IwDhK8bt.jpg',
-    genre: 'science fiction',
-  },
-  {
-    id: 3,
-    title: 'Interstellar',
-    description: 'Trong tương lai, một nhóm phi hành gia du hành qua hố đen...',
-    posterUrl:
-      'https://image.tmdb.org/t/p/w500/rAiYTfKGqDCRIIqo664sY9XZIvQ.jpg',
-    genre: 'science fiction',
-  },
-  {
-    id: 4,
-    title: 'The Dark Knight',
-    description: 'Batman đối đầu Joker ở Gotham...',
-    posterUrl:
-      'https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg',
-    genre: 'action',
-  },
-  {
-    id: 5,
-    title: 'The Matrix',
-    description: 'Một hacker khám phá sự thật về thế giới mô phỏng...',
-    posterUrl:
-      'https://image.tmdb.org/t/p/w500/f89U3ADr1oiB1s9GkdPOEpXUk5H.jpg',
-    genre: 'science fiction',
-  },
-];
-
+import movieApiService from '../../../../services/api.movie';
+import type { Movie } from '../../../../types/movie.type';
+import MovieDetailModal from '../../../../components/movieCard/DetailMovieCard';
 const genres = ['All', 'action', 'science fiction'];
 
 const MoviePage = () => {
+  const [movies, setMovies] = useState<Movie[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedGenre, setSelectedGenre] = useState('All');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const filteredMovies = mockMovies.filter((movie) => {
+  useEffect(() => {
+    const fetchMovies = async () => {
+      setLoading(true);
+      try {
+        const response = await movieApiService.getAllMovies();
+        setMovies(response.data.movies);
+      } catch (err) {
+        setError('Failed to load movies');
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMovies();
+  }, []);
+
+  const filteredMovies = movies.filter((movie) => {
     const matchesSearch = movie.title
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
     const matchesGenre =
-      selectedGenre === 'All' || movie.genre === selectedGenre;
+      selectedGenre === 'All' ||
+      (Array.isArray(movie.genre)
+        ? movie.genre.includes(selectedGenre)
+        : movie.genre === selectedGenre);
     return matchesSearch && matchesGenre;
   });
 
+  const handleMovieDetails = (movie: Movie) => {
+    setSelectedMovie(movie);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedMovie(null);
+    setIsModalOpen(false);
+  };
+
   return (
     <div className='p-6'>
-      {/* Search & Filter Controls with DaisyUI */}
+      {/* Search & Filter Controls */}
       <div className='flex flex-col sm:flex-row items-center justify-between gap-4 mb-6'>
-        {/* Search Box */}
         <div className='form-control w-full sm:w-1/2'>
           <label className='input input-bordered flex items-center gap-2'>
             <svg
@@ -92,14 +76,13 @@ const MoviePage = () => {
             <input
               type='text'
               className='grow'
-              placeholder='Seach for movies...'
+              placeholder='Search for movies...'
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </label>
         </div>
 
-        {/* Genre Filter */}
         <div className='flex justify-end w-full mb-6'>
           <div className='form-control w-full sm:w-1/3'>
             <select
@@ -117,8 +100,33 @@ const MoviePage = () => {
         </div>
       </div>
 
-      {/* Movie List */}
-      <MovieListPage movies={filteredMovies} />
+      {/* Status & Movie List */}
+      {loading && <p className='text-gray-400'>Loading movies...</p>}
+      {error && <p className='text-red-500'>{error}</p>}
+      {!loading && !error && (
+        <MovieListPage
+          movies={filteredMovies}
+          onDetailsClick={handleMovieDetails}
+        />
+      )}
+
+      {/* Movie Detail Modal */}
+      {selectedMovie && (
+        <MovieDetailModal
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+          title={selectedMovie.title}
+          description={selectedMovie.description}
+          posterUrl={selectedMovie.posterUrl}
+          genre={selectedMovie.genre}
+          releaseDate={selectedMovie.releaseDate}
+          duration={selectedMovie.duration}
+          rating={selectedMovie.rating}
+          isShowing={selectedMovie.isShowing}
+          createdAt={selectedMovie.createdAt}
+          updatedAt={selectedMovie.updatedAt}
+        />
+      )}
     </div>
   );
 };

@@ -11,7 +11,7 @@ import type { RoomFilters } from '../components/RoomFilter';
 
 import RoomFilter from '../components/RoomFilter';
 import { roomApiService } from '../../../../../services/api.room';
-import Swal from 'sweetalert2';
+import { confirmAndDelete, showToast } from '../../../../../utils/alertUtils';
 
 function RoomManagementPage() {
   const [rooms, setRooms] = useState<Room[]>([]);
@@ -63,25 +63,27 @@ function RoomManagementPage() {
   const handleAddRoom = async (newRoomData: CreateRoomData) => {
     setIsLoading(true);
     setError(null);
+
     try {
       await roomApiService.createRoom(newRoomData);
+      showToast('Thêm phòng thành công!', 'success');
       setIsModalOpen(false);
       setRoomToEdit(null);
       fetchRooms();
     } catch (err: unknown) {
-      console.error('Failed to add room:', err);
-      if (err instanceof Error) {
-        setError(new Error(err.message || 'Không thể thêm phòng mới.'));
-      } else if (
+      let errorMsg = 'Không thể thêm phòng mới.';
+
+      if (
         typeof err === 'object' &&
         err !== null &&
         'response' in err &&
         typeof (err as any).response?.data?.message === 'string'
       ) {
-        setError(new Error((err as any).response.data.message));
-      } else {
-        setError(new Error('An unexpected error occurred.'));
+        errorMsg = (err as any).response.data.message;
       }
+
+      showToast(errorMsg, 'error', 'Thất bại!');
+      setError(new Error(errorMsg));
     } finally {
       setIsLoading(false);
     }
@@ -92,33 +94,33 @@ function RoomManagementPage() {
 
     try {
       await roomApiService.updateRoom(roomToEdit._id, roomData);
-      Swal.fire('Thành công!', 'Thông tin phòng đã được cập nhật.', 'success');
+      showToast('Thông tin phòng đã được cập nhật.', 'success');
       fetchRooms();
     } catch (error) {
-      Swal.fire('Lỗi!', 'Không thể cập nhật phòng.', 'error');
+      showToast('Không thể cập nhật phòng.', 'error');
     }
     handleCloseModal();
   };
 
   const handleDeleteRoom = async (roomId: string) => {
-    const result = await Swal.fire({
-      title: 'Bạn có chắc muốn xoá phòng này?',
-      text: 'Thao tác này sẽ không thể hoàn tác!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Xoá',
-      cancelButtonText: 'Huỷ',
-    });
-
-    if (result.isConfirmed) {
-      try {
+    await confirmAndDelete(
+      async () => {
         await roomApiService.deleteRoom(roomId); // Gọi API xoá
-        Swal.fire('Đã xoá!', 'Phòng đã được xoá thành công.', 'success');
-        fetchRooms(); // Gọi lại hàm fetchRooms để reload danh sách
-      } catch (error) {
-        Swal.fire('Lỗi!', 'Không thể xoá phòng.', 'error');
+      },
+      (message) => {
+        showToast(message, 'success', 'Đã xoá!');
+        fetchRooms();
+      },
+      (errMessage) => {
+        console.error(errMessage);
+      },
+      {
+        title: 'Bạn có chắc muốn xoá phòng này?',
+        confirmText: 'Xoá',
+        cancelText: 'Huỷ',
+        successMessage: 'Phòng đã được xoá thành công.',
       }
-    }
+    );
   };
 
   const handleOpenAddModal = () => {
@@ -150,32 +152,35 @@ function RoomManagementPage() {
   };
 
   return (
-    <div className='min-h-screen bg-gray-900 text-white p-6'>
-      <div className='text-center py-8'>
-        <h1 className='text-4xl font-bold text-white'>Quản Lý Phòng</h1>
-      </div>
-      <div className='container mx-auto px-4 py-8'>
-        <AddRoomButton onAddClick={handleOpenAddModal} />
-        <RoomFilter
-          filters={filters}
-          onFilterChange={handleFilterChange}
-          onResetFilters={handleResetFilters}
-        />
-        <RoomTable
-          rooms={rooms}
-          onEdit={handleOpenEditModal}
-          onDelete={handleDeleteRoom}
-          isLoading={isLoading}
-          error={error}
-        />
-      </div>
+    <div className='min-h-screen bg-gradient-to-br from-gray-900 to-indigo-900 text-gray-100 p-8 font-inter flex flex-col items-center'>
+      <div className='max-w-7xl w-full'>
+        <h1 className='text-4xl font-extrabold text-center  text-white drop-shadow-lg'>
+          Quản Lý Rạp Chiếu
+        </h1>
 
-      <RoomModal
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        onSubmit={roomToEdit ? handleEditRoom : handleAddRoom}
-        roomToEdit={roomToEdit}
-      />
+        <div className='container mx-auto px-4 py-8'>
+          <AddRoomButton onAddClick={handleOpenAddModal} />
+          <RoomFilter
+            filters={filters}
+            onFilterChange={handleFilterChange}
+            onResetFilters={handleResetFilters}
+          />
+          <RoomTable
+            rooms={rooms}
+            onEdit={handleOpenEditModal}
+            onDelete={handleDeleteRoom}
+            isLoading={isLoading}
+            error={error}
+          />
+        </div>
+
+        <RoomModal
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+          onSubmit={roomToEdit ? handleEditRoom : handleAddRoom}
+          roomToEdit={roomToEdit}
+        />
+      </div>
     </div>
   );
 }

@@ -5,7 +5,7 @@ import type { Movie } from '../../../../../types/movie.type';
 import api from '../../../../../services/api.axios';
 
 interface MovieFormProps {
-  movie: Movie | null; // Null khi thêm mới, có dữ liệu khi chỉnh sửa
+  movie: Movie | null;
   onSuccess: (message: string) => void;
   onCancel: () => void;
 }
@@ -53,13 +53,12 @@ const MovieForm: React.FC<MovieFormProps> = ({
     if (movie) {
       setFormData({
         ...movie,
-        // Chuyển Date object thành ISO string để hiển thị trong input type="date"
+
         releaseDate: movie.releaseDate
           ? new Date(movie.releaseDate).toISOString().split('T')[0]
           : '',
       });
     } else {
-      // Reset form khi thêm mới
       setFormData({
         title: '',
         description: '',
@@ -72,7 +71,7 @@ const MovieForm: React.FC<MovieFormProps> = ({
         isShowing: false,
       });
     }
-  }, [movie]); // Thêm movie vào dependency array để useEffect chạy lại khi movie thay đổi
+  }, [movie]);
 
   const handleChange = (
     e: React.ChangeEvent<

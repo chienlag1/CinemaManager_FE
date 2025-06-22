@@ -4,13 +4,13 @@ import HomePage from './modules/user/Home/page/HomePage';
 import LayoutUser from './modules/layouts/layoutUser/LayoutUser';
 import LoginPage from './modules/auth/pages/LoginPage';
 import RegisterPage from './modules/auth/pages/RegisterPage';
-
 import ProtectedRoute from './modules/layouts/ProtectedRoute';
 import AdminDashboardPage from './modules/admin/pages/AdminDashboard';
 import LayoutAdmin from './modules/layouts/layoutAdmin/LayoutAdmin';
 import MovieManagementPage from './modules/admin/components/MovieManagement/pages/MovieManagementPage';
 import MoviePage from './modules/user/movie/pages/MoviePage';
 import RoomManagementPage from './modules/admin/components/RoomManagement/pages/RoomManagementPage';
+import ShowtimeManagementPage from './modules/admin/components/ShowTimeManagement/pages/ShowTimeManagementPage';
 
 function App() {
   return (
@@ -69,6 +69,17 @@ function App() {
               <LayoutAdmin>
                 {' '}
                 <RoomManagementPage />
+              </LayoutAdmin>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path='/admin/showtimes'
+          element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <LayoutAdmin>
+                {' '}
+                <ShowtimeManagementPage />
               </LayoutAdmin>
             </ProtectedRoute>
           }

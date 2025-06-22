@@ -100,7 +100,7 @@ const RoomModal: React.FC<RoomModalProps> = ({
     <div className='modal modal-open'>
       <div className='modal-box relative'>
         <h3 className='font-bold text-lg text-white'>
-          {roomToEdit ? 'Chỉnh Sửa Phòng' : 'Thêm Phòng Mới'}
+          {roomToEdit ? 'Chỉnh Sửa rạp' : 'Thêm rạp Mới'}
         </h3>
         <button
           className='btn btn-sm btn-circle absolute right-2 top-2'
@@ -111,12 +111,12 @@ const RoomModal: React.FC<RoomModalProps> = ({
         <form onSubmit={handleSubmit} className='py-4 space-y-4'>
           <div className='form-control'>
             <label className='label'>
-              <span className='label-text text-white'>Tên Phòng:</span>
+              <span className='label-text text-white'>Tên rạp:</span>
             </label>
             <input
               type='text'
               name='name'
-              placeholder='Nhập tên phòng'
+              placeholder='Nhập tên rạp'
               className='input input-bordered w-full'
               value={formData.name}
               onChange={handleChange}
@@ -142,7 +142,7 @@ const RoomModal: React.FC<RoomModalProps> = ({
 
           <div className='form-control'>
             <label className='label'>
-              <span className='label-text text-white'>Loại Phòng:</span>
+              <span className='label-text text-white'>Loại rạp:</span>
             </label>
             <select
               name='type'

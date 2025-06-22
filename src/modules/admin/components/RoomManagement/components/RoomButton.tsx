@@ -7,21 +7,28 @@ interface AddRoomButtonProps {
 const AddRoomButton: React.FC<AddRoomButtonProps> = ({ onAddClick }) => {
   return (
     <div className='mb-6 flex justify-start'>
-      <button className='btn btn-primary' onClick={onAddClick}>
-        <svg
-          xmlns='http://www.w3.org/2000/svg'
-          className='h-5 w-5 mr-2'
-          viewBox='0 0 20 20'
-          fill='currentColor'
+      <div className='mb-8 flex justify-start'>
+        <button
+          onClick={onAddClick}
+          className='flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-75'
         >
-          <path
-            fillRule='evenodd'
-            d='M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z'
-            clipRule='evenodd'
-          />
-        </svg>
-        Thêm Phòng Mới
-      </button>
+          <svg
+            className='w-5 h-5 mr-2 -ml-1'
+            fill='none'
+            stroke='currentColor'
+            viewBox='0 0 24 24'
+            xmlns='http://www.w3.org/2000/svg'
+          >
+            <path
+              strokeLinecap='round'
+              strokeLinejoin='round'
+              strokeWidth='2'
+              d='M12 6v6m0 0v6m0-6h6m-6 0H6'
+            ></path>
+          </svg>
+          Thêm Rạp Chiếu Mới
+        </button>
+      </div>
     </div>
   );
 };
