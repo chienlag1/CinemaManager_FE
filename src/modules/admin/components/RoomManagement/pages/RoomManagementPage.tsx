@@ -13,6 +13,7 @@ import RoomFilter from '../components/RoomFilter';
 import { roomApiService } from '../../../../../services/api.room';
 import { confirmAndDelete, showToast } from '../../../../../utils/alertUtils';
 import Pagination from '../../../../../components/pagination/pagination';
+import LoadingIndicator from '../../../../../components/loading/LoadingIndicator';
 
 function RoomManagementPage() {
   const [rooms, setRooms] = useState<Room[]>([]);
@@ -177,13 +178,17 @@ function RoomManagementPage() {
             onFilterChange={handleFilterChange}
             onResetFilters={handleResetFilters}
           />
-          <RoomTable
-            rooms={rooms}
-            onEdit={handleOpenEditModal}
-            onDelete={handleDeleteRoom}
-            isLoading={isLoading}
-            error={error}
-          />
+          {isLoading ? (
+            <LoadingIndicator message='Đang tải danh sách phòng...' />
+          ) : (
+            <RoomTable
+              rooms={rooms}
+              onEdit={handleOpenEditModal}
+              onDelete={handleDeleteRoom}
+              error={error}
+              isLoading={false}
+            />
+          )}
         </div>
 
         <RoomModal

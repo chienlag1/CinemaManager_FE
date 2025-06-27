@@ -15,13 +15,16 @@ export interface IMovie {
 
 // Giao diện cho một đối tượng Room đơn giản hóa, như được nạp bởi backend.
 // Điều này phản ánh các trường được truy xuất bởi `populate('room', 'name type capacity seats')`.
+import type { Seat } from './room.type';
+
 export interface IRoom {
   _id: string;
   name: string;
   type: string;
   capacity: number;
-  seats?: Array<{ row: string; number: number; }>; // Thông tin chi tiết ghế, được nạp cho `getShowtimeById`
+  seats?: Seat[]; // ✅ đúng type đã định nghĩa trong room.type.ts
 }
+
 
 // Giao diện cho một ghế đã được đặt
 export interface IBookedSeat {

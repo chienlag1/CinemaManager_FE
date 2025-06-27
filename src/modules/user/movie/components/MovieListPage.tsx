@@ -16,13 +16,8 @@ const MovieListPage: React.FC<MovieListPageProps> = ({
     {movies.map((movie) => (
       <MovieCard
         key={movie._id}
-        title={movie.title}
-        description={movie.description}
-        posterUrl={movie.posterUrl}
-        genre={movie.genre}
-        releaseDate={movie.releaseDate}
+        movie={movie}
         onDetailsClick={() => onDetailsClick(movie)}
-        onFavoriteClick={() => alert(`Thêm vào yêu thích: ${movie.title}`)}
       />
     ))}
   </div>

@@ -11,6 +11,7 @@ import MovieManagementPage from './modules/admin/components/MovieManagement/page
 import MoviePage from './modules/user/movie/pages/MoviePage';
 import RoomManagementPage from './modules/admin/components/RoomManagement/pages/RoomManagementPage';
 import ShowtimeManagementPage from './modules/admin/components/ShowTimeManagement/pages/ShowTimeManagementPage';
+import BookingTicketPage from './modules/user/ticket/pages/BookingTicketPage';
 
 function App() {
   return (
@@ -35,6 +36,16 @@ function App() {
             <ProtectedRoute>
               <LayoutUser>
                 <MoviePage />
+              </LayoutUser>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path='/booking/:movieId'
+          element={
+            <ProtectedRoute>
+              <LayoutUser>
+                <BookingTicketPage />
               </LayoutUser>
             </ProtectedRoute>
           }

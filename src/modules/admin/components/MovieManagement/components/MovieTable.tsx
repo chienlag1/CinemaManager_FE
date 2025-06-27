@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import type { Movie } from '../../../../../types/movie.type';
 import movieApiService from '../../../../../services/api.movie';
-import LoadingSpinner from '../../../../../components/loading/LoadingSpinner';
 import { confirmAndDelete, showToast } from '../../../../../utils/alertUtils';
 
 interface MovieListProps {
@@ -13,6 +12,7 @@ interface MovieListProps {
   currentPage: number;
   itemsPerPage: number;
   onTotalChange: (total: number) => void;
+  setIsLoading: (loading: boolean) => void;
 }
 
 const shortenDescription = (text: string, maxLength: number) => {
@@ -27,36 +27,34 @@ const MovieList: React.FC<MovieListProps> = ({
   currentPage,
   itemsPerPage,
   onTotalChange,
+  setIsLoading,
 }) => {
   const [allMovies, setAllMovies] = useState<Movie[]>([]);
   const [filteredMovies, setFilteredMovies] = useState<Movie[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchAllMovies = async () => {
-      setLoading(true);
-      setError(null);
+      setIsLoading(true);
       try {
         const response = await movieApiService.getAllMovies({});
         setAllMovies(response.data.movies);
       } catch (err: any) {
         const errorMessage =
-          err.response?.data?.message || 'Failed to fetch movies.';
-        setError(errorMessage);
+          err.response?.data?.message || 'Không thể tải danh sách phim.';
         Swal.fire({
           icon: 'error',
           title: 'Lỗi',
           text: errorMessage,
           customClass: { popup: 'swal2-dark-theme' },
         });
+        setAllMovies([]);
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     };
 
     fetchAllMovies();
-  }, [triggerRefresh]);
+  }, [triggerRefresh, setIsLoading]);
 
   useEffect(() => {
     let currentFiltered = allMovies;
@@ -81,7 +79,7 @@ const MovieList: React.FC<MovieListProps> = ({
     }
 
     setFilteredMovies(currentFiltered);
-    onTotalChange(currentFiltered.length); // Báo lại tổng số
+    onTotalChange(currentFiltered.length);
   }, [allMovies, filter, onTotalChange]);
 
   const indexOfLastMovie = currentPage * itemsPerPage;
@@ -102,13 +100,6 @@ const MovieList: React.FC<MovieListProps> = ({
       }
     );
   };
-
-  if (loading) return <LoadingSpinner />;
-  if (error) return <div className='text-center text-error p-4'>{error}</div>;
-  if (filteredMovies.length === 0 && !loading)
-    return (
-      <div className='text-center p-4'>Không có phim nào được tìm thấy.</div>
-    );
 
   return (
     <div className='bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-gray-700'>

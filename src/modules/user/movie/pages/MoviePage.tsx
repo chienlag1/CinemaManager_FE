@@ -4,6 +4,7 @@ import movieApiService from '../../../../services/api.movie';
 import type { Movie } from '../../../../types/movie.type';
 import MovieDetailModal from '../components/DetailMovieCard';
 import MovieFilter from '../../../admin/components/MovieManagement/components/MovieFilter';
+import LoadingIndicator from '../../../../components/loading/LoadingIndicator';
 
 interface MovieFilterType {
   title?: string;
@@ -70,15 +71,20 @@ const MoviePage = () => {
 
   return (
     <div className='p-6'>
-      <h1 className='text-4xl font-extrabold text-center  text-white drop-shadow-lg pb-6'>
+      <h1 className='text-4xl font-extrabold text-center text-white drop-shadow-lg pb-6'>
         Danh Sách Phim
       </h1>
 
-      {/* Hiển thị thông báo lỗi nếu có */}
-      {/* Bộ lọc phim */}
       <MovieFilter onFilterChange={(filter) => setFilter(filter)} />
 
-      {/* Trạng thái & danh sách phim */}
+      {/* Loading */}
+      {loading && (
+        <div className='flex justify-center mt-6'>
+          <LoadingIndicator message='Đang tải danh sách phim...' />
+        </div>
+      )}
+
+      {/* Kết quả */}
       {!loading &&
         !error &&
         (filteredMovies.length > 0 ? (
