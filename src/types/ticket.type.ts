@@ -1,8 +1,6 @@
-
-export interface Seat {
-  row: string;
-  number: number;
-}
+// types/ticket.type.ts
+import type { Seat } from './room.type';
+import type { IBookedSeat } from './showtime.type';
 
 export type TicketStatus = 'pending' | 'paid' | 'cancelled' | 'used' | 'refunded';
 
@@ -39,7 +37,8 @@ export interface Ticket {
 
 export interface CreateTicketPayload {
   showtimeId: string;
-  seats: Seat[];
+  seats: IBookedSeat[];
+  totalPrice: number;
 }
 
 export interface UpdateTicketStatusPayload {

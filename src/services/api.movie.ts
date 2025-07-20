@@ -91,8 +91,4 @@ const movieApiService = {
     },
 };
 
-export default movieApiService; // Keep this default export
-// REMOVE THE DUPLICATE EMPTY FUNCTION BELOW!
-// export function getMovieById(movieId: string) {
-//     throw new Error('Function not implemented.');
-// }
+export default movieApiService; 

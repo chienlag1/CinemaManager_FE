@@ -35,10 +35,8 @@ interface DeleteRoomResponse {
 }
 
 export const roomApiService = {
-  /**
-   * Lấy tất cả các phòng.
-   * GET /api/rooms
-   */
+
+
   getAllRooms: async (): Promise<AllRoomsResponse> => {
     const response = await api.get<AllRoomsResponse>('/rooms');
     return response.data;

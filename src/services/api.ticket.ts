@@ -1,40 +1,60 @@
-// services/api.ticket.ts
-import axios from "axios";
-import type { CreateTicketPayload, Ticket, UpdateTicketStatusPayload } from "../types/ticket.type";
-
+// src/services/api.ticket.ts
+import api from './api.axios';
+import type {
+  CreateTicketPayload,
+  Ticket,
+  UpdateTicketStatusPayload,
+} from '../types/ticket.type';
 
 export const ticketApiService = {
-  // POST /api/tickets
-  createTicket: (payload: CreateTicketPayload) =>
-    axios.post<{ data: { ticket: Ticket } }>('/api/tickets', payload),
+  // Hàm createTicket: Backend trả về { ticket: Ticket }, nên frontend cần truy cập res.data.ticket
+  createTicket: async (payload: CreateTicketPayload): Promise<Ticket> => {
+    console.log('🔥 [createTicket] Payload:', payload);
+    // Thay đổi kiểu dữ liệu mong đợi và cách truy cập
+    const res = await api.post<{ ticket: Ticket }>('/tickets', payload);
+    return res.data.ticket; // Đã sửa từ res.data.data.ticket
+  },
 
-  // GET /api/tickets (User xem vé của họ)
-  getMyTickets: () =>
-    axios.get<{ data: { tickets: Ticket[] } }>('/api/tickets'),
+  // Hàm getMyTickets: Backend trả về { tickets: Ticket[] }, nên frontend cần truy cập res.data.tickets
+  getMyTickets: async () => {
+    // Thay đổi kiểu dữ liệu mong đợi và cách truy cập
+    const res = await api.get<{ tickets: Ticket[] }>('/tickets');
+    return res.data.tickets; // Đã sửa từ res.data.data.tickets
+  },
 
-  // GET /api/tickets/admin?status=... (Admin)
-  getAllTickets: (params?: {
+  // Hàm getAllTickets: Backend trả về { tickets: Ticket[] }, nên frontend cần truy cập res.data.tickets
+  getAllTickets: async (params?: {
     user?: string;
     showtime?: string;
     status?: string;
-  }) =>
-    axios.get<{ data: { tickets: Ticket[] } }>(
-      '/api/tickets/admin',
-      { params }
-    ),
+  }) => {
+    // Thay đổi kiểu dữ liệu mong đợi và cách truy cập
+    const res = await api.get<{ tickets: Ticket[] }>('/tickets/admin', {
+      params,
+    });
+    return res.data.tickets; // Đã sửa từ res.data.data.tickets
+  },
 
-  // GET /api/tickets/:id
-  getTicketById: (id: string) =>
-    axios.get<{ data: { ticket: Ticket } }>(`/api/tickets/${id}`),
+  // Hàm getTicketById: Backend trả về { ticket: Ticket }, nên frontend cần truy cập res.data.ticket
+  getTicketById: async (id: string) => {
+    // Thay đổi kiểu dữ liệu mong đợi và cách truy cập
+    const res = await api.get<{ ticket: Ticket }>(`/tickets/${id}`);
+    return res.data.ticket; // Đã sửa từ res.data.data.ticket
+  },
 
-  // PUT /api/tickets/:id (Admin cập nhật trạng thái)
-  updateTicketStatus: (id: string, payload: UpdateTicketStatusPayload) =>
-    axios.put<{ data: { ticket: Ticket } }>(
-      `/api/tickets/${id}`,
-      payload
-    ),
+  // Hàm updateTicketStatus: Backend trả về { ticket: Ticket }, nên frontend cần truy cập res.data.ticket
+  updateTicketStatus: async (
+    id: string,
+    payload: UpdateTicketStatusPayload
+  ) => {
+    // Thay đổi kiểu dữ liệu mong đợi và cách truy cập
+    const res = await api.put<{ ticket: Ticket }>(`/tickets/${id}`, payload);
+    return res.data.ticket; // Đã sửa từ res.data.data.ticket
+  },
 
-  // DELETE /api/tickets/:id (Admin)
-  deleteTicket: (id: string) =>
-    axios.delete(`/api/tickets/${id}`),
+  // Hàm deleteTicket: Backend trả về dữ liệu trực tiếp, không cần thay đổi
+  deleteTicket: async (id: string) => {
+    const res = await api.delete(`/tickets/${id}`);
+    return res.data;
+  },
 };
