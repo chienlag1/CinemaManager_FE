@@ -1,6 +1,6 @@
 // BookingTicketPage.tsx
 import { useParams } from 'react-router-dom';
-import { useState, useEffect, useCallback } from 'react'; // Thêm useCallback
+import { useState, useEffect, useCallback } from 'react';
 import BookingSummary from '../components/BookingSummary';
 import type { IShowtime } from '../../../../types/showtime.type';
 import { paymentApiService } from '../../../../services/api.payment';
@@ -10,6 +10,8 @@ import type { Movie } from '../../../../types/movie.type';
 import SelectShowtime from '../components/SelectedShowtime';
 import SelectSeats from '../components/SelectSeats';
 import { Snackbar, Alert } from '@mui/material';
+
+const BACKEND_BASE_URL = 'http://localhost:5000';
 
 const BookingTicketPage = () => {
   const { movieId } = useParams<{ movieId: string }>();
@@ -61,15 +63,16 @@ const BookingTicketPage = () => {
       setLoading(true);
 
       const totalPrice = selectedSeats.length * selectedShowtime.price;
-      const returnUrl = `${window.location.origin}/payment-success`;
-      const cancelUrl = `${window.location.origin}/payment-cancel`;
+
+      const returnUrlForPayOS = `${BACKEND_BASE_URL}/api/payment/return`;
+      const cancelUrlForPayOS = `${BACKEND_BASE_URL}/api/payment/cancel`;
 
       const payload = {
         showtimeId: selectedShowtime._id,
         seats: selectedSeats.map((s) => ({ row: s.row, number: s.number })),
         totalPrice,
-        returnUrl,
-        cancelUrl,
+        returnUrl: returnUrlForPayOS, // Gửi URL backend cho PayOS
+        cancelUrl: cancelUrlForPayOS, // Gửi URL backend cho PayOS
       };
 
       console.log('⏺️ DEBUG: Payload gửi lên API =', payload);
