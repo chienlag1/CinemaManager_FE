@@ -64,8 +64,8 @@ const BookingTicketPage = () => {
 
       const totalPrice = selectedSeats.length * selectedShowtime.price;
 
-      const returnUrlForPayOS = `${BACKEND_BASE_URL}/api/payment/return`;
-      const cancelUrlForPayOS = `${BACKEND_BASE_URL}/api/payment/cancel`;
+      const returnUrlForPayOS = `${BACKEND_BASE_URL}/payment/return`;
+      const cancelUrlForPayOS = `${BACKEND_BASE_URL}/payment/cancel`;
 
       const payload = {
         showtimeId: selectedShowtime._id,
