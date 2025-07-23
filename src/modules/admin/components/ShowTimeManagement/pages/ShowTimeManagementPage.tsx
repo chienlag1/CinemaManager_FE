@@ -20,6 +20,7 @@ import movieApiService from '../../../../../services/api.movie';
 import { roomApiService } from '../../../../../services/api.room';
 import type { Movie } from '../../../../../types/movie.type';
 import type { Room } from '../../../../../types/room.type';
+import LoadingIndicator from '../../../../../components/loading/LoadingIndicator';
 
 // Định dạng ngày giờ
 const formatDateTime = (dateString: string | Date | undefined) => {
@@ -184,31 +185,7 @@ const ShowtimeManagementPage: React.FC = () => {
           onResetFilters={handleResetFilters}
         />
 
-        {isLoading && (
-          <div className='text-center py-8 text-blue-300'>
-            <svg
-              className='animate-spin h-8 w-8 text-blue-400 mx-auto'
-              xmlns='http://www.w3.org/2000/svg'
-              fill='none'
-              viewBox='0 0 24 24'
-            >
-              <circle
-                className='opacity-25'
-                cx='12'
-                cy='12'
-                r='10'
-                stroke='currentColor'
-                strokeWidth='4'
-              ></circle>
-              <path
-                className='opacity-75'
-                fill='currentColor'
-                d='M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z'
-              />
-            </svg>
-            <p className='mt-2 text-lg'>Đang tải suất chiếu...</p>
-          </div>
-        )}
+        {isLoading && <LoadingIndicator message='Đang tải suất chiếu...' />}
 
         {!isLoading && !error && (
           <ShowtimeTable

@@ -11,6 +11,9 @@
   },
   "dependencies": {
     "@clerk/clerk-react": "^5.31.5",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/material": "^7.1.2",
     "@reduxjs/toolkit": "^2.8.2",
     "@tailwindcss/vite": "^4.1.7",
     "@types/react-router-dom": "^5.3.3",
@@ -39,7 +42,7 @@
     "vite": "^6.3.5"
   },
   "env": {
-    "VITE_API_URL": "http://localhost:5000/api",
+    "VITE_API_URL": "https://cinema-manager-be.vercel.app/api",
     "VITE_CLERK_PUBLISHABLE_KEY": "k_test_Y29udGVudC1tYWdwaWUtMjEuY2xlcmsuYWNjb3VudHMuZGV2JA"
   }
 }

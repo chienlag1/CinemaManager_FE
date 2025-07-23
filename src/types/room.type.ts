@@ -5,12 +5,12 @@ export type RoomType = '2D' | '3D' | 'IMAX' | 'VIP' | 'Standard';
 
 // Kiểu dữ liệu cho một ghế
 export interface Seat {
-  _id: string;
   row: string;
   number: number;
-  isOccupied: boolean;
-  // Nếu có thêm thuộc tính khác, thêm tại đây
+  isBooked?: boolean; 
+  status?: 'available' | 'booked' | 'selected'; // Thêm dấu ?
 }
+
 
 // Kiểu dữ liệu cho một phòng chiếu phim
 export interface Room {

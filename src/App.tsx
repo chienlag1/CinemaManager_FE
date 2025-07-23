@@ -1,5 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import HomePage from './modules/user/Home/page/HomePage';
 import LayoutUser from './modules/layouts/layoutUser/LayoutUser';
 import LoginPage from './modules/auth/pages/LoginPage';
@@ -11,6 +10,10 @@ import MovieManagementPage from './modules/admin/components/MovieManagement/page
 import MoviePage from './modules/user/movie/pages/MoviePage';
 import RoomManagementPage from './modules/admin/components/RoomManagement/pages/RoomManagementPage';
 import ShowtimeManagementPage from './modules/admin/components/ShowTimeManagement/pages/ShowTimeManagementPage';
+import PaymentResultPage from './modules/user/payment/pages/PaymentSuccessPage';
+import BookingPage from './modules/user/payment/pages/BookingTicketPage';
+import PaymentSuccessPage from './modules/user/payment/pages/PaymentSuccessPage';
+import PaymentFailurePage from './modules/user/payment/pages/PaymentFailurePage';
 
 function App() {
   return (
@@ -18,7 +21,6 @@ function App() {
       <Routes>
         <Route path='/login' element={<LoginPage />} />
         <Route path='/register' element={<RegisterPage />} />
-
         <Route
           path='/'
           element={
@@ -39,13 +41,11 @@ function App() {
             </ProtectedRoute>
           }
         />
-
         <Route
           path='/admin'
           element={
             <ProtectedRoute allowedRoles={['admin']}>
               <LayoutAdmin>
-                {' '}
                 <AdminDashboardPage />
               </LayoutAdmin>
             </ProtectedRoute>
@@ -56,7 +56,6 @@ function App() {
           element={
             <ProtectedRoute allowedRoles={['admin']}>
               <LayoutAdmin>
-                {' '}
                 <MovieManagementPage />
               </LayoutAdmin>
             </ProtectedRoute>
@@ -67,7 +66,6 @@ function App() {
           element={
             <ProtectedRoute allowedRoles={['admin']}>
               <LayoutAdmin>
-                {' '}
                 <RoomManagementPage />
               </LayoutAdmin>
             </ProtectedRoute>
@@ -78,14 +76,58 @@ function App() {
           element={
             <ProtectedRoute allowedRoles={['admin']}>
               <LayoutAdmin>
-                {' '}
                 <ShowtimeManagementPage />
               </LayoutAdmin>
             </ProtectedRoute>
           }
         />
 
-        <Route path='*' element={<Navigate to='/' replace />} />
+        {/* Booking route */}
+        <Route
+          path='/booking/:movieId'
+          element={
+            <ProtectedRoute>
+              <LayoutUser>
+                <BookingPage />
+              </LayoutUser>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path='/payment-success'
+          element={
+            <ProtectedRoute>
+              <LayoutUser>
+                <PaymentSuccessPage />
+              </LayoutUser>
+            </ProtectedRoute>
+          }
+        />
+
+        {/* ✅ Trang kết quả thanh toán thất bại (PayOS redirect) */}
+        <Route
+          path='/payment-cancel'
+          element={
+            <ProtectedRoute>
+              <LayoutUser>
+                <PaymentFailurePage />
+              </LayoutUser>
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Keep your existing payment result route for backward compatibility */}
+        <Route
+          path='/payment-result/:ticketId'
+          element={
+            <ProtectedRoute>
+              <LayoutUser>
+                <PaymentResultPage />
+              </LayoutUser>
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );

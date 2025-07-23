@@ -6,6 +6,7 @@ import MovieList from '../components/MovieTable';
 import MovieAddButton from '../components/MovieAddButton';
 import Pagination from '../../../../../components/pagination/pagination';
 import { showToast } from '../../../../../utils/alertUtils';
+import LoadingIndicator from '../../../../../components/loading/LoadingIndicator';
 
 interface MovieFilterType {
   title?: string;
@@ -18,8 +19,9 @@ const MovieManagementPage: React.FC = () => {
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
   const [filter, setFilter] = useState<MovieFilterType>({});
   const [triggerRefresh, setTriggerRefresh] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // State phân trang
+  // Phân trang
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
   const [totalItems, setTotalItems] = useState(0);
@@ -76,6 +78,7 @@ const MovieManagementPage: React.FC = () => {
         <MovieAddButton onClick={handleAddNewMovie} />
         <MovieFilter onFilterChange={handleFilterChange} />
 
+        {/* Form thêm/sửa phim */}
         {isFormOpen && (
           <div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4'>
             <div className='card w-full max-w-2xl bg-base-200 shadow-xl p-6 relative overflow-y-auto max-h-[90vh]'>
@@ -97,6 +100,7 @@ const MovieManagementPage: React.FC = () => {
           </div>
         )}
 
+        {/* Loading */}
         <MovieList
           onEdit={handleEditMovie}
           onDeleteSuccess={handleDeleteSuccess}
@@ -105,7 +109,9 @@ const MovieManagementPage: React.FC = () => {
           currentPage={currentPage}
           itemsPerPage={itemsPerPage}
           onTotalChange={setTotalItems}
+          setIsLoading={setIsLoading}
         />
+        {isLoading && <LoadingIndicator message='Đang tải danh sách phim...' />}
 
         {/* PHÂN TRANG */}
         <div className='mt-6 flex justify-center'>
