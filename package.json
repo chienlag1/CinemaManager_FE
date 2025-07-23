@@ -42,7 +42,7 @@
     "vite": "^6.3.5"
   },
   "env": {
-    "VITE_API_URL": "http://localhost:5000/api",
+    "VITE_API_URL": "https://cinema-manager-be.vercel.app/api",
     "VITE_CLERK_PUBLISHABLE_KEY": "k_test_Y29udGVudC1tYWdwaWUtMjEuY2xlcmsuYWNjb3VudHMuZGV2JA"
   }
 }
